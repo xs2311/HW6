@@ -1,0 +1,106 @@
+---
+title: "HW6_xs2311"
+author: "Jessica Shen_xs2311"
+date: "3/6/2019"
+output: html_document
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = "")
+getwd()
+```
+
+```{r}
+library(devtools)
+library(roxygen2)
+
+
+```
+
+```{r}
+setwd("/Users/shenzhengping/Desktop/Modern Data Structure/HW6")
+DF <- read.csv("Seasons_Stats_NBA.csv")
+
+```
+
+
+#### 1. Create three functions and save them into individual R scripts (.R files).  
+
+Function 1: Your input for this function should be an individual year.  Your output should be a data point of interest in the dataset for some player.
+
+Function 2: Your input for this function should be an individual year.  Your output should be the oldest player in the NBA data for that year (if multiple players have the same age, then decide how to return a single player).
+
+Function 3: Your input for this function should be an individual year.  Your function should limit the data for that year to include numeric continuous variables only (not categorical data).  Your output should be the correlation matrix for all numeric variables in the data for that year.  (Hint: use cor(data) to create correlation matrix.  If you feel adventuresome, then you can return a correlogram plot from here (Links to an external site.)Links to an external site. instead).
+
+```{r}
+
+# Function 1
+library(tidyverse)
+TmPlayer <- function(YearInput) {
+  dataset1 <- select(filter(DF, Year == YearInput), Year, Player, Tm)
+  sprintf("In %s,  %s played in Team %s", YearInput, dataset1[1,"Player"], dataset1[1,"Tm"])
+}
+
+
+# Function 2
+OldestPlyr <- function(YearInput2) {
+  dataset2 <- arrange(select(filter(DF, Year == YearInput2), Player, Age), desc(Age))
+  sprintf("For %s, the oldest player is %s", YearInput2, dataset2[1,"Player"])
+}
+
+
+# Function 3
+cortable <- function(YearInput3) {
+  CorData <- keep(
+    filter(DF,Year==YearInput3),
+    is.numeric)
+  cor(CorData)
+}
+
+
+```
+
+#### 2. Create a package using the create_package function.  
+Save these .R files into the /R folder of your package.  Add roxygen documentation to the top of all .R functions.  Use the document() function to auto-create documentation for all functions.  Create a data/ folder in your package folder to share the NBA data with end users. 
+
+```{r}
+setwd("/Users/shenzhengping/Desktop/Modern Data Structure/HW6")
+create_package("HW6Package")
+```
+
+```{r}
+setwd("/Users/shenzhengping/Desktop/Modern Data Structure/HW6/HW6Package")
+dir.create("data/")
+
+```
+Save the full nba data object to the data/ folder.  After you save the new data in the data/ folder rerun the document() function to document your data.
+
+```{r}
+setwd("/Users/shenzhengping/Desktop/Modern Data Structure/HW6/HW6Package/data")
+usethis::use_data(df)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
